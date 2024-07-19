@@ -28,7 +28,7 @@ services:
     depends_on:
       - discovery-sv
       - config-server
-      - mysql
+     
 
   payment-ms:
     image: fatma81/payment-ms
