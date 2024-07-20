@@ -28,10 +28,12 @@ services:
     depends_on:
       - discovery-sv
       - config-server
+
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/commandedb?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 
+
 
   payment-ms:
     image: fatma81/payment-ms
