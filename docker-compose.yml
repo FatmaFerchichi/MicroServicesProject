@@ -18,21 +18,34 @@ services:
     depends_on:
       - config-server
 
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: commandedb
+    networks:
+      - microservices-network
+
   commande-ms:
     image: fatma81/commande-ms
     container_name: commande-ms
     ports:
       - "9090:9090"
     networks:
-      - host
+      - microservices-network
     depends_on:
       - discovery-sv
       - config-server
+      - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/commandedb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/commandedb?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 
-
+      SPRING_DATASOURCE_PASSWORD: ""
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-sv:8761/eureka/
+      
   payment-ms:
     image: fatma81/payment-ms
     container_name: payment-ms
@@ -43,7 +56,8 @@ services:
     depends_on:
       - discovery-sv
       - config-server
-
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-sv:8761/eureka/
   gateway:
     image: fatma81/gateway
     container_name: gateway
@@ -56,7 +70,8 @@ services:
       - config-server
       - commande-ms
       - payment-ms
-
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-sv:8761/eureka/
   kafka:
     image: wurstmeister/kafka:latest
     container_name: kafka
