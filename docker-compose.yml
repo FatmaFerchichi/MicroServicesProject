@@ -24,11 +24,16 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - microservices-network
+      - host
     depends_on:
       - discovery-sv
       - config-server
-     
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/commandedb?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 
+
 
   payment-ms:
     image: fatma81/payment-ms
@@ -75,7 +80,6 @@ services:
       - "2181:2181"
     networks:
       - microservices-network
-
 
 networks:
   microservices-network:
