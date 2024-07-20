@@ -40,12 +40,16 @@ services:
       - discovery-sv
       - config-server
       - mysql
+
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/commandedb?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
+
       SPRING_DATASOURCE_PASSWORD: ""
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-sv:8761/eureka/
-      
+
+      SPRING_DATASOURCE_PASSWORD: 
+
   payment-ms:
     image: fatma81/payment-ms
     container_name: payment-ms
